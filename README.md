@@ -1,5 +1,7 @@
 ![screenshot](https://raw.githubusercontent.com/ilyxa/NodeMCU_dht22_MQTT_DeepSleep/master/rapidscada_demo_screenshot.jpg "RapidScada Table Screenshot")
 
+### Software
+
 RapidScada, free and easy to use SCADA system https://rapidscada.org
 
 KpMQTT.dll https://github.com/bersim/OpenKPs/tree/master/KpMQTT
@@ -7,6 +9,8 @@ KpMQTT.dll https://github.com/bersim/OpenKPs/tree/master/KpMQTT
 Eclipse Mosquitto https://github.com/eclipse/mosquitto
 
 Works ONLY with Mosquitto (no idea why, RabbitMQ was a huge problem)
+
+### ESP8266 Setup
 
 ```
 cp credentials.lua.example credentials.lua
