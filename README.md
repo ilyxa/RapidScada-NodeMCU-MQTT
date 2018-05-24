@@ -12,4 +12,7 @@ luatool.py -f user.lua
 luatool.py -f credentials.lua
 ```
 
-
+crontab entry
+```
+* * * * *       /opt/scada/regenerate_heartbeat.sh
+```
