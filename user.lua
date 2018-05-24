@@ -17,6 +17,7 @@ m:on("message", function(client, topic, data)
 end)
 temperature = 0
 humidity = 0
+voltage = 0
 connected = false
 wifi.setmode(wifi.STATION)
 wifi.setphymode(wifi_signal_mode)
@@ -43,13 +44,15 @@ function loop()
         print("Connecting to MQTT...")
         m:connect( mqtt_broker_ip , mqtt_broker_port, 0, function(client)
              get_sensor_Data()
+             voltage = adc.readvdd33() / 1000
              m:subscribe("heartbeat", 0, function() end)
              m:publish((mqtt_client_id).."/temperature",(temp).."."..(temp % 10), 0, 0, function()
              m:publish((mqtt_client_id).."/humidity",(humi).."."..(humi % 10), 0, 0, function()
+             m:publish((mqtt_client_id).."/voltage",(voltage).."."..(voltage % 100), 0, 0, function()
              m:publish((mqtt_client_id).."/heartbeat",heartbeat, 0, 0, function()
              m:publish((mqtt_client_id).."/online", 2, 0, 0, function()
                  node.dsleep(time_between_sensor_readings*1000)
-             end) end) end) end)
+             end) end) end) end) end)
         end,
         function(client, reason)
             print("error: "..reason)
@@ -57,8 +60,15 @@ function loop()
         end)
         
     else
-        --print("Connecting...")
+--        print("Connecting...")
+--        print(wifi.sta.status())
     end
 end
+
+if adc.force_init_mode(adc.INIT_VDD33)
+    then
+        node.restart()
+        return
+    end
 
 tmr.alarm(0, 100, 1, function() loop() end)
