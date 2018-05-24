@@ -3,6 +3,11 @@
 RapidScada, free and easy to use SCADA system https://rapidscada.org
 
 KpMQTT.dll https://github.com/bersim/OpenKPs/tree/master/KpMQTT
+
+Eclipse Mosquitto https://github.com/eclipse/mosquitto
+
+Works ONLY with Mosquitto (no idea why, RabbitMQ was a huge problem)
+
 ```
 cp credentials.lua.example credentials.lua
 ```
