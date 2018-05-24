@@ -8,7 +8,7 @@ KpMQTT.dll https://github.com/bersim/OpenKPs/tree/master/KpMQTT
 
 Eclipse Mosquitto https://github.com/eclipse/mosquitto
 
-Works ONLY with Mosquitto (no idea why, RabbitMQ was a huge problem)
+Works **ONLY** with Mosquitto (no idea why, RabbitMQ was a huge problem)
 
 ### ESP8266 Setup
 
@@ -23,6 +23,10 @@ luatool.py -f user.lua
 luatool.py -f credentials.lua
 ```
 
+### RapidScada setup
+**TODO**
+
+### Heartbeat
 crontab entry
 ```
 * * * * *       /opt/scada/regenerate_heartbeat.sh
