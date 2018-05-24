@@ -30,6 +30,6 @@ crontab entry
 
 Heartbeat logic: every minutes topic "heartbeat" pub new value generated randomly. Every session from ESP sensors network get new system value and re-publish it again and again to make sure that sensor is online and health state is OK. 
 
-TODO: xor values temp and humi w/ current heartbeat values.
-
-TODO: RapidScada setup.
+### TODO
+*xor values temp and humi w/ current heartbeat values.
+*RapidScada setup.
