@@ -1,0 +1,1 @@
+../sm_home_repo/rapidscada/scripts/regenerate_heartbeat.sh
