@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+ replace esp1 with right name
+--> 
 <DevTemplate>
 
     <MqttParams Hostname="scada" ClientID="scada" Port="1883" UserName="scada" Password="scada"/>
@@ -6,6 +9,8 @@
     <MqttSubTopics>
         <Topic TopicName="esp1/temperature" QosLevel="0" NumCnl="1000"/>
         <Topic TopicName="esp1/humidity" QosLevel="0" NumCnl="1001"/>
+        <Topic TopicName="esp1/rssi" QosLevel="0" NumCnl="1006"/>
+	    <Topic TopicName="esp1/voltage" QosLevel="0" NumCnl="1007"/>
         <Topic TopicName="esp1/online" QosLevel="0" NumCnl="1008"/>
         <Topic TopicName="esp1/heartbeat" QosLevel="0" NumCnl="1009"/>
         <Topic TopicName="light1" QosLevel="0" NumCnl="2000"/>
