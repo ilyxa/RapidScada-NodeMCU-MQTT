@@ -10,7 +10,6 @@ rssi = 0
 mac = 0
 connected = false
 
-
 mac = wifi.sta.getmac()
 mqtt_client_id = mqtt_client_id .. mac:gsub(":","")
 
