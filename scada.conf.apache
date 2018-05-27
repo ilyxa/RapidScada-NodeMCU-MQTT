@@ -1,0 +1,16 @@
+Alias /scada "/var/www/html/scada"
+MonoServerPath scada "/usr/bin/mod-mono-server4"
+MonoApplications scada "/scada:/var/www/html/scada"
+MonoAutoRestartMode scada Time
+MonoAutoRestartTime scada 00:00:30
+MonoMaxActiveRequests scada 20
+MonoMaxWaitingRequests scada 20
+MonoSetEnv scada MONO_THREADS_PER_CPU=20;MONO_ASPNET_WEBCONFIG_CACHESIZE=200
+MonoMaxMemory scada 206158430208
+MonoMaxCPUTime scada 4096
+<Location "/scada">
+  Allow from all
+  Order allow,deny
+  MonoSetServerAlias scada
+  SetHandler mono
+</Location>
