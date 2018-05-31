@@ -1,4 +1,4 @@
-![screenshot](https://raw.githubusercontent.com/ilyxa/NodeMCU_dht22_MQTT_DeepSleep/master/rapidscada_demo_screenshot.jpg "RapidScada Table Screenshot")
+![screenshot](https://raw.githubusercontent.com/ilyxa/NodeMCU_dht22_MQTT_DeepSleep/master/misc/rapidscada_demo_screenshot.jpg "RapidScada Table Screenshot")
 
 ### Software
 
