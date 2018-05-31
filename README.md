@@ -18,6 +18,7 @@ Works **ONLY** with Mosquitto (no idea why, RabbitMQ was a huge problem)
 cp credentials.lua.example credentials.lua
 ```
 Edit credentials.lua any way
+
 Upload: 
 ```
 luatool.py -f init.lua
