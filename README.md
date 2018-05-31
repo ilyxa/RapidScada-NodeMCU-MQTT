@@ -34,7 +34,7 @@ Prepare firmware:
 * use [https://nodemcu-build.com](https://nodemcu-build.com)
 * use hard (not so) way to build your own, [manual here](https://nodemcu.readthedocs.io/en/master/en/build/)
 
-Update firmware, [manual and detail here](https://nodemcu.readthedocs.io/en/master/en/flash/).
+Update firmware, [manual and details is here](https://nodemcu.readthedocs.io/en/master/en/flash/).
 
 ```
 esptool write_flash 0x00000 0x00000.bin 0x10000 0x10000.bin
