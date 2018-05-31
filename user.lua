@@ -2,15 +2,14 @@ dofile("credentials.lua")
 wifi_signal_mode = wifi.PHYMODE_N
 time_between_sensor_readings_rtcmem_flag = rtcmem.read32(1) -- flag
 time_between_sensor_readings_rtcmem_value = rtcmem.read32(2) -- value
-if  time_between_sensor_readings_rtcmem_flag == 1 or time_between_sensor_readings_rtcmem_flag == 2 then -- 1 per-device 2 global
+if  time_between_sensor_readings_rtcmem_flag == 1 then -- 1 per-device
     time_between_sensor_readings = time_between_sensor_readings_rtcmem_value * 1000
 else -- use default 60 seconds interval
     time_between_sensor_readings = 60000
 end
-print(time_between_sensor_readings)
 update_interval_hard_limit_high = 300 -- seconds prevent wrong value reading from scada
 update_interval_hard_limit_low = 5 
-mqtt_keepalive = time_between_sensor_readings / 1000 + 30 -- not work as expected check again
+mqtt_keepalive = time_between_sensor_readings_rtcmem_value + 30
 heartbeat = 0
 online_status = 1 -- 1 - offline 2 - online 3 - sensor error
 temperature = 0
@@ -19,7 +18,6 @@ voltage = 0
 rssi = 0
 mac = 0
 connected = false
-enable_global_update = true
 dht_pin = 5 -- esp-01 = 4 esp-12 = 5
 
 mac = wifi.sta.getmac()
@@ -38,33 +36,15 @@ m:on("message", function(client, topic, data)
     end
   end
   if (topic == (mqtt_client_id).."/update_interval") then
-  --if (topic == "update_interval") then
       if data ~= nil then -- TODO add temp and checking zero and below value
           local data_temp = tonumber(data)
-          if data_temp > update_interval_hard_limit_low and data_temp <= update_interval_hard_limit_high then --hardlimit
-              time_between_sensor_readings = data_temp * 1000
-              mqtt_keepalive = data_temp + 30
-              enable_global_update = false
-              rtcmem.write32(1,1) -- per-device
-              rtcmem.write32(2,data_temp)
-              --print(time_between_sensor_readings)
-              --print(tonumber(data)*1000)
-          else
-              enable_global_update = true
-          end
-      end
-  end
-  if (topic == "update_interval" and enable_global_update) then
-      if data ~= nil then
-          local data_temp = tonumber(data)
-          if data_temp > update_interval_hard_limit_low and data_temp <= update_interval_hard_limit_high then --hardlimit
-              time_between_sensor_readings = data_temp * 1000
-              mqtt_keepalive = data_temp + 30
-              rtcmem.write32(1,2) -- global
-              rtcmem.write32(2,data_temp)
-          else
-              --print("do nothing stay on default value")
-          end
+          if data_temp > update_interval_hard_limit_low 
+              and data_temp <= update_interval_hard_limit_high then
+                time_between_sensor_readings = data_temp * 1000
+                mqtt_keepalive = data_temp + 30
+                rtcmem.write32(1,1) -- per-device
+                rtcmem.write32(2,data_temp)
+            end
       end
   end
 end)
