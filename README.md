@@ -15,6 +15,14 @@ Works **ONLY** with Mosquitto (no idea why, RabbitMQ was a huge problem)
 * [conf/KpMQTT_scada.xml](conf/KpMQTT_scada.xml) KpMQTT config example
 * [conf/incnl.dat](conf/incnl.dat) Input Channel Config file for RapidScada
 * [conf/scada.conf.apache](conf/scada.conf.apache) Example config for Apache 2.2 + mod_mono
+
+[scripts/](scripts/) script running on RapidScada Site and development VM
+* [scripts/cleanup.sh](scripts/cleanup.sh) Cleanup all logs in Rapidscada installation
+* [scripts/package.cmd](scripts/package.cmd) repack config on DevVM RapidScada Windows and send it to prodsite
+* [scripts/regenerate_heartbeat.sh](scripts/regenerate_heartbeat.sh) Regenerate system heartbeat (every * minutes)
+* [scripts/restart_scadacomm.sh](scripts/restart_scadacomm.sh) Dump current log file and restart ScadaComm (for monit)
+* [scripts/update_config.sh](scripts/update_config.sh) Unpack archive from package.cmd and restart RapidScada
+
 ### ESP8266 Setup
 
 ```
