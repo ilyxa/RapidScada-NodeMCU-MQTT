@@ -29,6 +29,17 @@ Works **ONLY** with Mosquitto (no idea why, RabbitMQ was a huge problem)
 
 ### ESP8266 Setup
 
+Prepare firmware:
+* use my version [esp_firmware/](esp_firmware/)
+* use [https://nodemcu-build.com](https://nodemcu-build.com)
+* use hard (not so) way to build your own, [manual here](https://nodemcu.readthedocs.io/en/master/en/build/)
+
+Update firmware, [manual and detail here](https://nodemcu.readthedocs.io/en/master/en/flash/).
+
+```
+esptool write_flash 0x00000 0x00000.bin 0x10000 0x10000.bin
+```
+
 ```
 cp credentials.lua.example credentials.lua
 ```
