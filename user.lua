@@ -30,7 +30,7 @@ m:on("message", function(client, topic, data)
   end
   if (topic == (mqtt_client_id).."/update_interval") then
   --if (topic == "update_interval") then
-      if data ~= nil then
+      if data ~= nil then -- TODO add temp and checking zero and below value
           if tonumber(data) <= update_interval_hard_limit then -- 5 minutes limit (check in scada)
               time_between_sensor_readings = tonumber(data) * 1000
               --print(time_between_sensor_readings)
