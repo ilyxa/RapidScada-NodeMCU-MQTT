@@ -1,8 +1,15 @@
 dofile("credentials.lua")
 wifi_signal_mode = wifi.PHYMODE_N
-time_between_sensor_readings = 60000
-update_interval_hard_limit = 300 -- seconds prevent wrong value reading from scada
-mqtt_keepalive = time_between_sensor_readings / 1000 + 30
+local temp_rtc_1 = rtcmem.read32(1) -- flag
+local temp_rtc_2 = rtcmem.read32(2) -- value
+if temp_rtc_1 == 99 then -- 99 is "magic" later 48879 0xbeef
+    time_between_sensor_readings = temp_rtc_2 * 1000
+else
+    time_between_sensor_readings = 60000
+end
+update_interval_hard_limit_high = 300 -- seconds prevent wrong value reading from scada
+update_interval_hard_limit_low = 5 
+mqtt_keepalive = time_between_sensor_readings / 1000 + 30 -- not work as expected check again
 heartbeat = 0
 online_status = 1 -- 1 - offline 2 - online 3 - sensor error
 temperature = 0
@@ -11,12 +18,13 @@ voltage = 0
 rssi = 0
 mac = 0
 connected = false
+enable_global_update = true
 dht_pin = 5 -- esp-01 = 4 esp-12 = 5
 
 mac = wifi.sta.getmac()
 mqtt_client_id = mqtt_client_id .. mac:gsub(":","")
 
-m = mqtt.Client(mqtt_client_id, mqtt_keepalive, mqtt_username, mqtt_password, 1)
+m = mqtt.Client(mqtt_client_id, mqtt_keepalive, mqtt_username, mqtt_password, 1) -- check dynamic keepalive settings
 m:lwt((mqtt_client_id).."/online", 1, 0, 1) -- offline event
 m:on("connect", function(client) print ("connected") end)
 m:on("offline", function(client) 
@@ -31,16 +39,30 @@ m:on("message", function(client, topic, data)
   if (topic == (mqtt_client_id).."/update_interval") then
   --if (topic == "update_interval") then
       if data ~= nil then -- TODO add temp and checking zero and below value
-          if tonumber(data) <= update_interval_hard_limit then -- 5 minutes limit (check in scada)
-              time_between_sensor_readings = tonumber(data) * 1000
+          data_temp = tonumber(data)
+          if data_temp > update_interval_hard_limit_low and data_temp <= update_interval_hard_limit_high then --hardlimit
+              time_between_sensor_readings = data_temp * 1000
+              mqtt_keepalive = data_temp + 30
+              enable_global_update = false
+              rtcmem.write32(1,99)
+              rtcmem.write32(2,data_temp)
               --print(time_between_sensor_readings)
               --print(tonumber(data)*1000)
+          else
+              enable_global_update = true
           end
       end
-  elseif (topic == "update_interval") then
+  end
+  if (topic == "update_interval" and enable_global_update) then
       if data ~= nil then
-          if tonumber(data) <= update_interval_hard_limit then
-              time_between_sensor_readings = tonumber(data) * 1000
+          data_temp = tonumber(data)
+          if data_temp > update_interval_hard_limit_low and data_temp <= update_interval_hard_limit_high then --hardlimit
+              time_between_sensor_readings = data_temp * 1000
+              mqtt_keepalive = data_temp + 30
+              rtcmem.write32(1,99)
+              rtcmem.write32(2,data_temp)
+          else
+              --print("do nothing stay on default value")
           end
       end
   end
@@ -91,7 +113,7 @@ function loop()
         function(client, reason)
             print("error: "..reason)
             node.dsleep(time_between_sensor_readings*1000,1)
-            node.restart() -- no exeption handling just reboot-and-forget, in worst case it takes too much power
+--            node.restart() -- no exeption handling just reboot-and-forget, in worst case it takes too much power
         end)
         
     else
