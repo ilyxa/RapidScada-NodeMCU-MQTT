@@ -1,7 +1,8 @@
 dofile("credentials.lua")
 wifi_signal_mode = wifi.PHYMODE_N
 time_between_sensor_readings = 60000
-update_interval_hard_limit = 300 -- seconds
+update_interval_hard_limit = 300 -- seconds prevent wrong value reading from scada
+mqtt_keepalive = time_between_sensor_readings / 1000 + 30
 heartbeat = 0
 online_status = 1 -- 1 - offline 2 - online 3 - sensor error
 temperature = 0
@@ -15,8 +16,8 @@ dht_pin = 5 -- esp-01 = 4 esp-12 = 5
 mac = wifi.sta.getmac()
 mqtt_client_id = mqtt_client_id .. mac:gsub(":","")
 
-m = mqtt.Client(mqtt_client_id, 90, mqtt_username, mqtt_password, 1)
-m:lwt((mqtt_client_id).."/online", 1, 0, 0) -- offline event
+m = mqtt.Client(mqtt_client_id, mqtt_keepalive, mqtt_username, mqtt_password, 1)
+m:lwt((mqtt_client_id).."/online", 1, 0, 1) -- offline event
 m:on("connect", function(client) print ("connected") end)
 m:on("offline", function(client) 
     print ("offline") 
@@ -79,11 +80,11 @@ function loop()
              m:subscribe({["heartbeat"]=0,["update_interval"]=0,[(mqtt_client_id).."/update_interval"]=0}, 0, function() end)
              m:publish((mqtt_client_id).."/temperature",temp, 0, 0, function()
              m:publish((mqtt_client_id).."/humidity",humi, 0, 0, function()
-             m:publish((mqtt_client_id).."/update_interval",time_between_sensor_readings/1000,0,0,function()
+             m:publish((mqtt_client_id).."/update_interval",time_between_sensor_readings/1000,0,1,function()
              m:publish((mqtt_client_id).."/voltage",voltage, 0, 0, function()
              m:publish((mqtt_client_id).."/rssi",rssi, 0, 0, function()
              m:publish((mqtt_client_id).."/heartbeat",heartbeat, 0, 0, function()
-             m:publish((mqtt_client_id).."/online", online_status, 0, 0, function()
+             m:publish((mqtt_client_id).."/online", online_status, 0, 1, function()
                 node.dsleep(time_between_sensor_readings*1000,1)
              end) end) end) end) end) end) end)
         end,
