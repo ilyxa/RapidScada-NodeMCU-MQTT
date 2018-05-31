@@ -11,8 +11,8 @@ Eclipse Mosquitto https://github.com/eclipse/mosquitto
 Works **ONLY** with Mosquitto (no idea why, RabbitMQ was a huge problem)
 
 ### Files structure:
-[conf/](conf/) config examples
-[conf/KpMQTT_scada.xml](conf/KpMQTT_scada.xml) KpMQTT config example
+* [conf/](conf/) config examples
+* [conf/KpMQTT_scada.xml](conf/KpMQTT_scada.xml) KpMQTT config example
 
 
 ### ESP8266 Setup
