@@ -11,10 +11,10 @@ Eclipse Mosquitto https://github.com/eclipse/mosquitto
 Works **ONLY** with Mosquitto (no idea why, RabbitMQ was a huge problem)
 
 ### Files structure:
-* [conf/](conf/) config examples
+[conf/](conf/) config examples
 * [conf/KpMQTT_scada.xml](conf/KpMQTT_scada.xml) KpMQTT config example
-
-
+* [conf/incnl.dat](conf/incnl.dat) Input Channel Config file for RapidScada
+* [conf/scada.conf.apache](conf/scada.conf.apache) Example config for Apache 2.2 + mod_mono
 ### ESP8266 Setup
 
 ```
