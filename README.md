@@ -10,13 +10,15 @@ Eclipse Mosquitto https://github.com/eclipse/mosquitto
 
 Works **ONLY** with Mosquitto (no idea why, RabbitMQ was a huge problem)
 
+[conf/] configuration files
+
 ### ESP8266 Setup
 
 ```
 cp credentials.lua.example credentials.lua
 ```
-edit credentials.lua any way
-upload: 
+Edit credentials.lua any way
+Upload: 
 ```
 luatool.py -f init.lua
 luatool.py -f user.lua
