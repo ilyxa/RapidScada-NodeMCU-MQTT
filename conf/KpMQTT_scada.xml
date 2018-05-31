@@ -1,27 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
- replace  esp15ccf7f8071f9 with right name
+ replace esp1 with right name
+
 --> 
 <DevTemplate>
 
     <MqttParams Hostname="scada" ClientID="scada" Port="1883" UserName="scada" Password="scada"/>
     <RapSrvCnf ServerHost="localhost" ServerPort="10000" ServerUser="ScadaComm" ServerPwd="12345"/>
     <MqttSubTopics>
-        <Topic TopicName="esp15ccf7f8071f9/temperature" QosLevel="0" NumCnl="1000"/>
-        <Topic TopicName="esp15ccf7f8071f9/humidity" QosLevel="0" NumCnl="1001"/>
-        <Topic TopicName="esp15ccf7f8071f9/rssi" QosLevel="0" NumCnl="1006"/>
-	    <Topic TopicName="esp15ccf7f8071f9/voltage" QosLevel="0" NumCnl="1007"/>
-        <Topic TopicName="esp15ccf7f8071f9/online" QosLevel="0" NumCnl="1008"/>
-        <Topic TopicName="esp15ccf7f8071f9/heartbeat" QosLevel="0" NumCnl="1009"/>
+        <Topic TopicName="esp-12-5ccf7f8071f9/temperature" QosLevel="0" NumCnl="1000"/>
+        <Topic TopicName="esp-12-5ccf7f8071f9/humidity" QosLevel="0" NumCnl="1001"/>
+        <Topic TopicName="esp-12-5ccf7f8071f9/update_interval" QosLevel="0" NumCnl="1005"/>
+        <Topic TopicName="esp-12-5ccf7f8071f9/rssi" QosLevel="0" NumCnl="1006"/>
+	<Topic TopicName="esp-12-5ccf7f8071f9/voltage" QosLevel="0" NumCnl="1007"/>
+        <Topic TopicName="esp-12-5ccf7f8071f9/online" QosLevel="0" NumCnl="1008"/>
+        <Topic TopicName="esp-12-5ccf7f8071f9/heartbeat" QosLevel="0" NumCnl="1009"/>
+
+        <Topic TopicName="esp-01-6001940a6ef8/temperature" QosLevel="0" NumCnl="1010"/>
+        <Topic TopicName="esp-01-6001940a6ef8/humidity" QosLevel="0" NumCnl="1011"/>
+        <Topic TopicName="esp-01-6001940a6ef8/update_interval" QosLevel="0" NumCnl="1015"/>
+        <Topic TopicName="esp-01-6001940a6ef8/rssi" QosLevel="0" NumCnl="1016"/>
+	<Topic TopicName="esp-01-6001940a6ef8/voltage" QosLevel="0" NumCnl="1017"/>
+        <Topic TopicName="esp-01-6001940a6ef8/online" QosLevel="0" NumCnl="1018"/>
+        <Topic TopicName="esp-01-6001940a6ef8/heartbeat" QosLevel="0" NumCnl="1019"/>
+
         <Topic TopicName="light1" QosLevel="0" NumCnl="2000"/>
         <Topic TopicName="light2" QosLevel="0" NumCnl="2001"/>
         <Topic TopicName="heartbeat" QosLevel="0" NumCnl="3000"/>
+        <Topic TopicName="update_interval" QosLevel="1" NumCnl="3001"/>
     </MqttSubTopics>
     <MqttPubTopics>
     </MqttPubTopics>
     <MqttPubCmds>
-        <Topic TopicName="light1" QosLevel="0" NumCmd="1"/>
-        <Topic TopicName="light2" QosLevel="0" NumCmd="2"/>
+        <Topic TopicName="light1" QosLevel="0" NumCmd="1" Retain="False"/>
+        <Topic TopicName="light2" QosLevel="0" NumCmd="2" Retain="False"/>
+        <Topic TopicName="esp-12-5ccf7f8071f9/update_interval" QosLevel="0" NumCmd="1005" Retain="True" />
+        <Topic TopicName="esp-01-6001940a6ef8/update_interval" QosLevel="0" NumCmd="1015" Retain="True" />
     </MqttPubCmds>
     <MqttSubCmds>
     </MqttSubCmds>
