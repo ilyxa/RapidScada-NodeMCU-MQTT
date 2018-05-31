@@ -10,7 +10,7 @@ Eclipse Mosquitto https://github.com/eclipse/mosquitto
 
 Works **ONLY** with Mosquitto (no idea why, RabbitMQ was a huge problem)
 
-[conf/] configuration files
+[configuration files conf/](conf/)
 
 ### ESP8266 Setup
 
