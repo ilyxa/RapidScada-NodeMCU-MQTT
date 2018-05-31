@@ -23,6 +23,10 @@ Works **ONLY** with Mosquitto (no idea why, RabbitMQ was a huge problem)
 * [scripts/restart_scadacomm.sh](scripts/restart_scadacomm.sh) Dump current log file and restart ScadaComm (for monit)
 * [scripts/update_config.sh](scripts/update_config.sh) Unpack archive from package.cmd and restart RapidScada
 
+[esp_firmware/](esp_firmware/) NodeMCU Sensor 2.2.0 with modules ADC BIT BME280 DHT DS18B20 FILE GPIO I2C MQTT NET NODE OW RTCMEM SPI TLS TMR UART WIFI
+
+[dlls/](dlls/) KpMQTT.dll with Retain support
+
 ### ESP8266 Setup
 
 ```
