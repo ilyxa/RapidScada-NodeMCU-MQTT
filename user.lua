@@ -1,6 +1,7 @@
 dofile("credentials.lua")
 wifi_signal_mode = wifi.PHYMODE_N
 time_between_sensor_readings = 60000
+update_interval_hard_limit = 300 -- seconds
 heartbeat = 0
 online_status = 1 -- 1 - offline 2 - online 3 - sensor error
 temperature = 0
@@ -26,12 +27,19 @@ m:on("message", function(client, topic, data)
         heartbeat = data
     end
   end
-  if (topic == "update_interval") then
+  if (topic == (mqtt_client_id).."/update_interval") then
+  --if (topic == "update_interval") then
       if data ~= nil then
-          if tonumber(data) <= 300 then -- 5 minutes limit (check in scada)
+          if tonumber(data) <= update_interval_hard_limit then -- 5 minutes limit (check in scada)
               time_between_sensor_readings = tonumber(data) * 1000
               --print(time_between_sensor_readings)
               --print(tonumber(data)*1000)
+          end
+      end
+  elseif (topic == "update_interval") then
+      if data ~= nil then
+          if tonumber(data) <= update_interval_hard_limit then
+              time_between_sensor_readings = tonumber(data) * 1000
           end
       end
   end
@@ -68,7 +76,7 @@ function loop()
              voltage = adc.readvdd33()
              rssi = wifi.sta.getrssi()
 
-             m:subscribe({["heartbeat"]=0,["update_interval"]=0}, 0, function() end)
+             m:subscribe({["heartbeat"]=0,["update_interval"]=0,[(mqtt_client_id).."/update_interval"]=0}, 0, function() end)
              m:publish((mqtt_client_id).."/temperature",temp, 0, 0, function()
              m:publish((mqtt_client_id).."/humidity",humi, 0, 0, function()
              m:publish((mqtt_client_id).."/update_interval",time_between_sensor_readings/1000,0,0,function()
