@@ -1,24 +1,6 @@
 dofile("credentials.lua")
-wifi_signal_mode = wifi.PHYMODE_N
-time_between_sensor_readings_rtcmem_flag = rtcmem.read32(1) -- flag
-time_between_sensor_readings_rtcmem_value = rtcmem.read32(2) -- value
-if  time_between_sensor_readings_rtcmem_flag == 1 then -- 1 per-device
-    time_between_sensor_readings = time_between_sensor_readings_rtcmem_value * 1000
-else -- use default 60 seconds interval
-    time_between_sensor_readings = 60000
-end
-update_interval_hard_limit_high = 300 -- seconds prevent wrong value reading from scada
-update_interval_hard_limit_low = 5 
-mqtt_keepalive = time_between_sensor_readings_rtcmem_value + 30
-heartbeat = 0
-online_status = 1 -- 1 - offline 2 - online 3 - sensor error
-temperature = 0
-humidity = 0
-voltage = 0
-rssi = 0
-mac = 0
-connected = false
-dht_pin = 5 -- esp-01 = 4 esp-12 = 5
+dofile("device_vars.lua")
+dofile("variables.lua")
 
 mac = wifi.sta.getmac()
 mqtt_client_id = mqtt_client_id .. mac:gsub(":","")
@@ -38,7 +20,7 @@ m:on("message", function(client, topic, data)
   if (topic == (mqtt_client_id).."/update_interval") then
       if data ~= nil then -- TODO add temp and checking zero and below value
           local data_temp = tonumber(data)
-          if data_temp > update_interval_hard_limit_low 
+          if data_temp >= update_interval_hard_limit_low 
               and data_temp <= update_interval_hard_limit_high then
                 time_between_sensor_readings = data_temp * 1000
                 mqtt_keepalive = data_temp + 30
@@ -76,6 +58,7 @@ function loop()
         tmr.stop(0)
 --        print("Connecting to MQTT...")
         m:connect( mqtt_broker_ip , mqtt_broker_port, 0, function(client)
+            print(".")
              get_sensor_Data()
              voltage = adc.readvdd33()
              rssi = wifi.sta.getrssi()
@@ -88,6 +71,7 @@ function loop()
              m:publish((mqtt_client_id).."/rssi",rssi, 0, 0, function()
              m:publish((mqtt_client_id).."/heartbeat",heartbeat, 0, 0, function()
              m:publish((mqtt_client_id).."/online", online_status, 0, 1, function()
+                 print(".")
                 node.dsleep(time_between_sensor_readings*1000,1)
              end) end) end) end) end) end) end)
         end,
@@ -97,7 +81,7 @@ function loop()
         end)
         
     else
-        print("Connecting...")
+--        print("Connecting...")
 --        print(wifi.sta.status())
     end
 end
