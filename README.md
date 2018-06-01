@@ -25,7 +25,7 @@ Works **ONLY** with Mosquitto (no idea why, RabbitMQ was a huge problem)
 
 [esp_firmware/](esp_firmware/) NodeMCU Sensor 2.2.0 with modules ADC BIT BME280 DHT DS18B20 FILE GPIO I2C MQTT NET NODE OW RTCMEM SPI TLS TMR UART WIFI
 
-[dlls/](dlls/) KpMQTT.dll with Retain support
+[dlls/](dlls/) KpMQTT.dll with Retain support (export FrameworkPathOverride=/usr/lib/mono/4.5/ is important ;) )
 
 ### ESP8266 Setup
 
