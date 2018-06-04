@@ -1,3 +1,4 @@
+print("debug vars")
 wifi_signal_mode = wifi.PHYMODE_N
 time_between_sensor_readings_rtcmem_flag = rtcmem.read32(1) -- flag
 time_between_sensor_readings_rtcmem_value = rtcmem.read32(2) -- value

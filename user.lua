@@ -3,7 +3,7 @@ dofile("device_vars.lua")
 dofile("variables.lua")
 
 mac = wifi.sta.getmac()
-mqtt_client_id = mqtt_client_id .. mac:gsub(":","")
+mqtt_client_id = board_id .. mac:gsub(":","")
 
 m = mqtt.Client(mqtt_client_id, mqtt_keepalive, mqtt_username, mqtt_password, 1) -- check dynamic keepalive settings
 m:lwt((mqtt_client_id).."/online", 1, 0, 1) -- offline event
@@ -39,6 +39,7 @@ if client_ip ~= "" then
     wifi.sta.setip({ip=client_ip,netmask=client_netmask,gateway=client_gateway})
 end
 function get_sensor_Data()
+    local dht_pin = 5
     status, temp, humi, temp_dec, humi_dec = dht.read(dht_pin)
     if status == dht.OK then
         --print("Temperature: "..(temp).."."..(temp % 10).." deg C")
